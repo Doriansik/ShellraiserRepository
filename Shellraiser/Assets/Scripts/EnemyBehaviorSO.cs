@@ -1,0 +1,12 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "EnemyBehaviorSO", menuName = "Scriptable Objects/EnemyBehaviorSO")]
+public class EnemyBehaviorSO : ScriptableObject
+{
+    [Header("Statystyki jednostki")]
+    public float moveSpeed; // Predkosc poruszania sie
+    public int damage; // Ilosc zadawanych obrazen
+    public float attackCooldown; // Czas miedzy atakami
+    public int health; // Punkty zycia jednostki
+    public GameObject prefab; // Prefab wroga
+}
