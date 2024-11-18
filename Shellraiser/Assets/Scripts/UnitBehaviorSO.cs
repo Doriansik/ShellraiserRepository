@@ -8,5 +8,6 @@ public class UnitBehaviorSO : ScriptableObject
     public int damage; // Ilosc zadawanych obrazen
     public float attackCooldown; // Czas miedzy atakami
     public int health; // Punkty zycia jednostki
+    public int cost; // Monety potrzebne do kupienia jednostki
     public GameObject prefab; // Prefab jednostki 
 }

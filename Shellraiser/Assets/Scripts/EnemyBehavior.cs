@@ -38,7 +38,7 @@ public class EnemyBehavior : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // Sprawdzenie, czy napotkano cel
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Home"))
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("HomeUnit"))
         {
             target = collision.transform;
         }

@@ -1,5 +1,5 @@
-using NUnit.Framework;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,11 +9,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float timeBetweenSpawn;
     private float spawnRate;
 
+    [Header("Shop Variables")]
+    [SerializeField] private int coinAmount;
+    [SerializeField] private float timeToEarnCoin;
+    [SerializeField] private TextMeshProUGUI coinText;
+    private float coinTimer;
+
+
     [Header("Other")]
-    [SerializeField] private EnemyBehaviorSO enemyOrdinary;
     [SerializeField] private GameObject homeEnemyUnitSpawnpoint;
     [SerializeField] private GameObject homeUnitSpawnpoint;
-    [SerializeField] private GameObject unitPrefab;
+    [SerializeField] private UnitBehaviorListSO unitListType;
     [SerializeField] private EnemyBehaviorListSO enemyListType;
 
     private void Start()
@@ -23,19 +29,25 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Instantiate(unitPrefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
-        }
-
-        //Spawn();
+        EarningCoin();
+        Spawn();
     }
 
 
+    private void EarningCoin()
+    {
+        // Odliczanie czasu
+        coinTimer += Time.deltaTime;
 
-    
-
-
+        // Jeœli min¹³ czas do zdobycia monety
+        if (coinTimer >= timeToEarnCoin)
+        {
+            coinAmount++; // Dodanie monety
+            coinText.text = coinAmount.ToString();
+            coinTimer = 0f; // Resetowanie licznika
+            Debug.Log("Zdoby³eœ monetê! Aktualna liczba monet: " + coinAmount);
+        }
+    }
 
     private void Spawn()
     {
@@ -54,4 +66,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    public void OnSpawnOrdinary()
+    {
+        UnitBehaviorSO unitOrdinary = unitListType.unitType[0];
+        if (coinAmount >= unitOrdinary.cost)
+        {
+            Instantiate(unitOrdinary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
+            coinAmount -= unitOrdinary.cost;
+        }
+    }
+
+    public void OnSpawnRare()
+    {
+        UnitBehaviorSO unitRare = unitListType.unitType[1];
+        if (coinAmount >= unitRare.cost)
+        {
+            Instantiate(unitRare.prefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
+            coinAmount -= unitRare.cost;
+        }
+    }
 }
