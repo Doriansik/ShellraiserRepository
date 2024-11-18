@@ -27,6 +27,7 @@ public class UnitBehavior : MonoBehaviour
             if (attackTimer <= 0f)
             {
                 Attack();
+                AttackHome();
                 attackTimer = unitOrdinary.attackCooldown;
             }
         }
@@ -34,8 +35,8 @@ public class UnitBehavior : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        // Sprawdzenie, czy napotkano wroga
-        if (collision.gameObject.CompareTag("Enemy"))
+        // Sprawdzenie, czy napotkano cel
+        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Home"))
         {
             target = collision.transform;
         }
@@ -59,6 +60,19 @@ public class UnitBehavior : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(unitOrdinary.damage);
+            }
+        }
+    }
+
+    void AttackHome()
+    {
+        if (target != null)
+        {
+            // Zadaje obrazenia wrogowi
+            HomeHealth homeHealth = target.GetComponent<HomeHealth>();
+            if (homeHealth != null)
+            {
+                homeHealth.TakeDamage(unitOrdinary.damage);
             }
         }
     }

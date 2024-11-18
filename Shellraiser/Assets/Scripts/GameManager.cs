@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject homeEnemyUnitSpawnpoint;
     [SerializeField] private GameObject homeUnitSpawnpoint;
     [SerializeField] private GameObject unitPrefab;
+    [SerializeField] private EnemyBehaviorListSO enemyListType;
 
     private void Start()
     {
@@ -25,19 +28,30 @@ public class GameManager : MonoBehaviour
             Instantiate(unitPrefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
         }
 
-        Spawn();
+        //Spawn();
     }
 
+
+
+    
 
 
 
     private void Spawn()
     {
+        // Odliczanie do kolejnego spawnu
         spawnRate -= Time.deltaTime;
         if (spawnRate <= 0f)
         {
-            Instantiate(enemyOrdinary.prefab, homeEnemyUnitSpawnpoint.transform.position, Quaternion.identity);
+            // Losowanie przeciwnika z listy
+            EnemyBehaviorSO randomEnemyType = enemyListType.enemyType[Random.Range(0, enemyListType.enemyType.Count)];
+
+            // Spawnowanie przeciwnika
+            Instantiate(randomEnemyType.prefab, homeEnemyUnitSpawnpoint.transform.position, Quaternion.identity);
+
+            // Resetowanie czasu do nastêpnego spawnu
             spawnRate = timeBetweenSpawn;
         }
     }
+
 }

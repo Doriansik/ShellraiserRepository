@@ -496,6 +496,7 @@ MonoBehaviour:
   homeEnemyUnitSpawnpoint: {fileID: 829135868}
   homeUnitSpawnpoint: {fileID: 312643480}
   unitPrefab: {fileID: 4884588771154387750, guid: 0cc84fd96c4a4f34494382a24841cd4b, type: 3}
+  enemyListType: {fileID: 11400000, guid: a0e6464ce4bb53f47bca4dfc20957f5a, type: 2}
 --- !u!4 &745496335
 Transform:
   m_ObjectHideFlags: 0
