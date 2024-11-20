@@ -15,7 +15,7 @@ public class HomeHealth : MonoBehaviour
         healthBar.SetMaxHealth(homeHealth);
     }
 
-    void Update()
+    void Update() // just for testing!!! ! ! !
     {
         if (Input.GetKeyDown(KeyCode.Space)) // press space to take 20 dmg for testing the hp bar
         {                                       
