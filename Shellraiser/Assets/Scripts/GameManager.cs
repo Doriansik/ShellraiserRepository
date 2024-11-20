@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -85,5 +86,12 @@ public class GameManager : MonoBehaviour
             Instantiate(unitRare.prefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
             coinAmount -= unitRare.cost;
         }
+    }
+
+
+    public void OnRestartGame()
+    {
+        SceneManager.LoadScene(0);
+        Time.timeScale = 1;
     }
 }

@@ -69,10 +69,10 @@ public class UnitBehavior : MonoBehaviour
         if (target != null)
         {
             // Zadaje obrazenia wrogowi
-            HomeHealth homeHealth = target.GetComponent<HomeHealth>();
-            if (homeHealth != null)
+            HomeEnemyHealth homeEnemyHealth = target.GetComponent<HomeEnemyHealth>();
+            if (homeEnemyHealth != null)
             {
-                homeHealth.TakeDamage(unitOrdinary.damage);
+                homeEnemyHealth.TakeDamage(unitOrdinary.damage);
             }
         }
     }

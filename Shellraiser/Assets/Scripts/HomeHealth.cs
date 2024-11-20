@@ -3,6 +3,7 @@ using UnityEngine;
 public class HomeHealth : MonoBehaviour
 { 
     [SerializeField] private int homeHealth;
+    [SerializeField] private GameObject gameOverLay;
     private Transform target;
     private int currentHealth;
 
@@ -27,5 +28,7 @@ public class HomeHealth : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
+        Time.timeScale = 0;
+        gameOverLay.SetActive(true);
     }
 }
