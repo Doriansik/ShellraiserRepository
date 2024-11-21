@@ -7,12 +7,12 @@ public class HomeEnemyHealth : MonoBehaviour
     private Transform target;
     private int currentHealth;
 
-    public HealthBar healthBar;
+    //public HealthBar healthBar;
 
     private void Start()
     {
         currentHealth = homeHealth;
-        healthBar.SetMaxHealth(homeHealth);
+        //healthBar.SetMaxHealth(homeHealth);
     }
 
     void Update() // just for testing!!!!!
@@ -26,7 +26,7 @@ public class HomeEnemyHealth : MonoBehaviour
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        healthBar.SetHealth(currentHealth); //updating the health bar
+        //healthBar.SetHealth(currentHealth); //updating the health bar
         if (currentHealth <= 0)
         {
             Die();
