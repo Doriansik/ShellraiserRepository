@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         EarningCoin();
-        //Spawn();
+        Spawn();
     }
 
 

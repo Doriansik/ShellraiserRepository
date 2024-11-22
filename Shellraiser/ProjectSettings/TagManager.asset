@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - HomeEnemy
   - HomeUnit
+  - EnemyProjectile
+  - UnitProjectile
   layers:
   - Default
   - TransparentFX
