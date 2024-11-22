@@ -4,8 +4,8 @@ public class HomeHealth : MonoBehaviour
 { 
     [SerializeField] private int homeHealth;
     [SerializeField] private GameObject gameOverLay;
-    private Transform target;
     private int currentHealth;
+
 
     public HealthBar healthBar;
 
@@ -21,6 +21,7 @@ public class HomeHealth : MonoBehaviour
         {                                       
             TakeDamage(20);
         }
+        
     }
 
     public void TakeDamage(int amount)

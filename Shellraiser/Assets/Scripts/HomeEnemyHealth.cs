@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class HomeEnemyHealth : MonoBehaviour
 { 
-    [SerializeField] private int homeHealth;
+    [SerializeField] private int homeHealthEnemy;
     [SerializeField] private GameObject winOverlay;
-    private Transform target;
     private int currentHealth;
+    private float target;
 
-    public HealthBar healthBar;
+    public EnemyHPBar healthBarEnemy;
 
     private void Start()
     {
-        currentHealth = homeHealth;
-        healthBar.SetMaxHealth(homeHealth);
+        currentHealth = homeHealthEnemy;
+        healthBarEnemy.SetMaxHealth(homeHealthEnemy);
     }
 
     void Update() // just for testing!!!!!
@@ -26,9 +26,10 @@ public class HomeEnemyHealth : MonoBehaviour
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        healthBar.SetHealth(currentHealth); //updating the health bar
+        healthBarEnemy.SetHealth(currentHealth); //updating the health bar
         if (currentHealth <= 0)
         {
+            currentHealth = 0;
             Die();
         }
         Debug.Log(currentHealth);

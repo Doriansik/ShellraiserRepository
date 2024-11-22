@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         EarningCoin();
-        Spawn();
+        //Spawn();
     }
 
 
@@ -46,7 +47,6 @@ public class GameManager : MonoBehaviour
             coinAmount++; // Dodanie monety
             coinText.text = coinAmount.ToString();
             coinTimer = 0f; // Resetowanie licznika
-            Debug.Log("Zdoby³eœ monetê! Aktualna liczba monet: " + coinAmount);
         }
     }
 
@@ -59,8 +59,11 @@ public class GameManager : MonoBehaviour
             // Losowanie przeciwnika z listy
             EnemyBehaviorSO randomEnemyType = enemyListType.enemyType[Random.Range(0, enemyListType.enemyType.Count)];
 
+            // Tworzenie rotacji na podstawie danych z ScriptableObject
+            Quaternion spawnRotation = Quaternion.Euler(randomEnemyType.spawnRotation);
+
             // Spawnowanie przeciwnika
-            Instantiate(randomEnemyType.prefab, homeEnemyUnitSpawnpoint.transform.position, Quaternion.identity);
+            Instantiate(randomEnemyType.prefab, homeEnemyUnitSpawnpoint.transform.position, spawnRotation);
 
             // Resetowanie czasu do nastêpnego spawnu
             spawnRate = timeBetweenSpawn;
@@ -68,12 +71,13 @@ public class GameManager : MonoBehaviour
     }
 
 
+
     public void OnSpawnOrdinary()
     {
         UnitBehaviorSO unitOrdinary = unitListType.unitType[0];
         if (coinAmount >= unitOrdinary.cost)
         {
-            Instantiate(unitOrdinary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
+            Instantiate(unitOrdinary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitOrdinary.spawnRotation));
             coinAmount -= unitOrdinary.cost;
         }
     }
@@ -88,10 +92,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnSpawnLegendary()
+    {
+        UnitBehaviorSO unitLegendary = unitListType.unitType[2];
+        if (coinAmount >= unitLegendary.cost)
+        {
+            Instantiate(unitLegendary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitLegendary.spawnRotation));
+            coinAmount -= unitLegendary.cost;
+        }
+    }
+
 
     public void OnRestartGame()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Gameplay");
         Time.timeScale = 1;
     }
 }

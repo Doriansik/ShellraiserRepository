@@ -3,18 +3,24 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
-    public void PlayGame()
+    public void OnPlayGame()
     {
-        SceneManager.LoadSceneAsync(1); 
+        SceneManager.LoadScene("Gameplay"); 
     }
 
-    public void Credits()
+    public void OnCredits()
     {
-        SceneManager.LoadSceneAsync(2);
+        SceneManager.LoadScene("Credits");
     }
 
-    public void QuitGame()
+    public void OnBackButton()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+
+    public void OnQuitGame()
     {
         Application.Quit();
+        Debug.Log("You quit game!");
     }
 }

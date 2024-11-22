@@ -9,5 +9,6 @@ public class UnitBehaviorSO : ScriptableObject
     public float attackCooldown; // Czas miedzy atakami
     public int health; // Punkty zycia jednostki
     public int cost; // Monety potrzebne do kupienia jednostki
+    public Vector3 spawnRotation; // Rotacja przeciwnika po spawnie
     public GameObject prefab; // Prefab jednostki 
 }

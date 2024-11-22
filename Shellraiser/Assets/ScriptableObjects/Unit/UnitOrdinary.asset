@@ -17,4 +17,5 @@ MonoBehaviour:
   attackCooldown: 1
   health: 50
   cost: 5
-  prefab: {fileID: 4884588771154387750, guid: 0cc84fd96c4a4f34494382a24841cd4b, type: 3}
+  spawnRotation: {x: 270, y: 0, z: 0}
+  prefab: {fileID: 6823589896212695052, guid: 517eefadd1b8cb74ebd223ae6c2583cd, type: 3}
