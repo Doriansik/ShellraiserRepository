@@ -4,6 +4,7 @@ public class HomeEnemyHealth : MonoBehaviour
 { 
     [SerializeField] private int homeHealthEnemy;
     [SerializeField] private GameObject winOverlay;
+    [SerializeField] private GameObject storageButtons;
     private int currentHealth;
     private float target;
 
@@ -40,5 +41,6 @@ public class HomeEnemyHealth : MonoBehaviour
     {
         Destroy(gameObject);
         winOverlay.SetActive(true);
+        storageButtons.SetActive(false);
     }
 }

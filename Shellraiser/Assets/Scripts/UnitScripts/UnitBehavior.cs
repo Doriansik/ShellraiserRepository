@@ -20,12 +20,15 @@ public class UnitBehavior : MonoBehaviour
     {
         if (target == null && targetUnit == null)
         {
+            // Brak celu, wiêc przechodzimy do chodzenia
             animator.SetBool("isAttacking", false);
+
             transform.position += Vector3.right * unitOrdinary.moveSpeed * Time.deltaTime;
         }
         else
         {
-            // Jednostka zaczyna atakowac, jesli ma cel
+            animator.SetBool("isAttacking", true); // W³¹czenie animacji ataku
+
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0f)
             {
@@ -43,7 +46,7 @@ public class UnitBehavior : MonoBehaviour
         {
             target = collision.transform;
         }
-        
+
         if (collision.gameObject.CompareTag("Player"))
         {
             targetUnit = collision.transform;
@@ -52,17 +55,24 @@ public class UnitBehavior : MonoBehaviour
 
     void OnCollisionExit(Collision collision)
     {
-        // Jesli wrog wyjdzie z zasiêgu
+        // Jeœli wróg wyjdzie z zasiêgu
         if (collision.transform == target)
         {
             target = null;
         }
-        
+
         if (collision.transform == targetUnit)
         {
             targetUnit = null;
         }
+
+        // Jeœli nie ma ju¿ celu, ustaw animacjê na chodzenie
+        if (target == null && targetUnit == null)
+        {
+            animator.SetBool("isAttacking", false); // Wy³¹czenie animacji ataku
+        }
     }
+
 
     void Attack()
     {
