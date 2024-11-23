@@ -2533,7 +2533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51a8bee836cd2c046aad098bea3ed8d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenSpawn: 5
+  timeBetweenSpawn: 7
   buyDelayAmount: 4
   coinAmount: 0
   timeToEarnCoin: 1
