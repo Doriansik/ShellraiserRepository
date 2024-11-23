@@ -19,3 +19,4 @@ MonoBehaviour:
   cost: 5
   spawnRotation: {x: 0, y: 0, z: 0}
   prefab: {fileID: 4884588771154387750, guid: b13649e276f789442a4aedd6468510f5, type: 3}
+  isRanged: 1

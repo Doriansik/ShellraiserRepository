@@ -11,4 +11,5 @@ public class UnitBehaviorSO : ScriptableObject
     public int cost; // Monety potrzebne do kupienia jednostki
     public Vector3 spawnRotation; // Rotacja przeciwnika po spawnie
     public GameObject prefab; // Prefab jednostki 
+    public bool isRanged;
 }
