@@ -6,6 +6,11 @@ public class EnemyHPBar : MonoBehaviour
 {
     public Slider sliderEnemy;
 
+    private void Start()
+    {
+        sliderEnemy.interactable = false;
+    }
+
     public void SetMaxHealth(int health)
     {
         sliderEnemy.maxValue = health;

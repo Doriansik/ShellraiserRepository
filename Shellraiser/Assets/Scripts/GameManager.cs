@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
         if (buyDelay <= 0f && coinAmount >= unitOrdinary.cost)
         {
             coinAmount -= unitOrdinary.cost;
+            UpdateCoinUI();
             // Tworzenie jednostki
             Instantiate(unitOrdinary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitOrdinary.spawnRotation));
             buyDelay = buyDelayAmount;
@@ -100,6 +101,7 @@ public class GameManager : MonoBehaviour
         if (buyDelay <= 0f && coinAmount >= unitRare.cost)
         {
             coinAmount -= unitRare.cost;
+            UpdateCoinUI();
             Instantiate(unitRare.prefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
             buyDelay = buyDelayAmount;
         }
@@ -111,11 +113,16 @@ public class GameManager : MonoBehaviour
         if (buyDelay <= 0f && coinAmount >= unitLegendary.cost)
         {
             coinAmount -= unitLegendary.cost;
+            UpdateCoinUI();
             Instantiate(unitLegendary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitLegendary.spawnRotation));
             buyDelay = buyDelayAmount;
         }
     }
 
+    private void UpdateCoinUI()
+    {
+        coinText.text = coinAmount.ToString();
+    }
 
     public void OnRestartGame()
     {
