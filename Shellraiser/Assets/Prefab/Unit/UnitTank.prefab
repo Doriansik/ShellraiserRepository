@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 5527535408547724435}
   - component: {fileID: 9181426400675748451}
   m_Layer: 0
-  m_Name: UnitSnailLegendary
+  m_Name: UnitTank
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

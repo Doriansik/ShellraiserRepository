@@ -5,8 +5,11 @@ public class UnitBehavior : MonoBehaviour
 {
     [SerializeField] private UnitBehaviorSO unitOrdinary;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject projectilePrefab; // Prefab pocisku dla jednostek dystansowych
+    [SerializeField] private Transform firePoint; // Punkt wystrza³u pocisku
+    [SerializeField] private float detectionRange = 10f; // Zasiêg wykrywania wrogów
+
     private Transform target;
-    private Transform targetUnit;
     private float attackTimer;
     private int currentHealth;
 
@@ -18,68 +21,82 @@ public class UnitBehavior : MonoBehaviour
 
     void Update()
     {
-        if (target == null && targetUnit == null)
+        if (unitOrdinary.isRanged)
         {
-            // Brak celu, wiêc przechodzimy do chodzenia
-            animator.SetBool("isAttacking", false);
+            FindTarget(); // Szukaj celu, jeœli jednostka dystansowa
+        }
 
+        if (target == null)
+        {
+            // Brak celu - jednostka siê porusza
+            animator.SetBool("isAttacking", false);
             transform.position += Vector3.right * unitOrdinary.moveSpeed * Time.deltaTime;
         }
         else
         {
-            animator.SetBool("isAttacking", true); // W³¹czenie animacji ataku
+            // Jednostka ma cel
+            animator.SetBool("isAttacking", true);
 
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0f)
             {
-                Attack();
-                AttackHome();
+                if (unitOrdinary.isRanged)
+                {
+                    RangedAttack(); // Atak dystansowy
+                }
+                else
+                {
+                    Attack();       // Atak wrêcz
+                    AttackHome();   // Atak na HomeEnemy
+                }
                 attackTimer = unitOrdinary.attackCooldown;
             }
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    void FindTarget()
     {
-        // Sprawdzenie, czy napotkano cel
-        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("HomeEnemy"))
+        // Wyszukaj najbli¿szego wroga w okreœlonym zasiêgu
+        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRange);
+        float closestDistance = detectionRange;
+        Transform closestTarget = null;
+
+        foreach (Collider hit in hits)
         {
-            target = collision.transform;
+            if (hit.CompareTag("Enemy") || hit.CompareTag("HomeEnemy"))
+            {
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestTarget = hit.transform;
+                }
+            }
         }
 
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            targetUnit = collision.transform;
-        }
+        target = closestTarget; // Ustaw najbli¿szy cel jako target
     }
 
-    void OnCollisionExit(Collision collision)
+    void RangedAttack()
     {
-        // Jeœli wróg wyjdzie z zasiêgu
-        if (collision.transform == target)
+        if (target != null)
         {
-            target = null;
-        }
-
-        if (collision.transform == targetUnit)
-        {
-            targetUnit = null;
-        }
-
-        // Jeœli nie ma ju¿ celu, ustaw animacjê na chodzenie
-        if (target == null && targetUnit == null)
-        {
-            animator.SetBool("isAttacking", false); // Wy³¹czenie animacji ataku
+            // Wystrzeliwanie pocisku
+            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+            ProjectileBehavior projectileScript = projectile.GetComponent<ProjectileBehavior>();
+            if (projectileScript != null)
+            {
+                projectileScript.Initialize(target, unitOrdinary.damage); // Przekazanie celu i obra¿eñ
+            }
         }
     }
-
 
     void Attack()
     {
         if (target != null)
         {
             animator.SetBool("isAttacking", true);
-            // Zadaje obrazenia wrogowi
+            // Zadaje obra¿enia wrogowi
             EnemyBehavior enemy = target.GetComponent<EnemyBehavior>();
             if (enemy != null)
             {
@@ -93,7 +110,7 @@ public class UnitBehavior : MonoBehaviour
         if (target != null)
         {
             animator.SetBool("isAttacking", true);
-            // Zadaje obrazenia wrogowi
+            // Zadaje obra¿enia HomeEnemy
             HomeEnemyHealth homeEnemyHealth = target.GetComponent<HomeEnemyHealth>();
             if (homeEnemyHealth != null)
             {
@@ -119,11 +136,10 @@ public class UnitBehavior : MonoBehaviour
 
     private IEnumerator DestroyAfterAnimation()
     {
-        // Poczekaj na czas trwania animacji
         yield return new WaitForSeconds(2f);
-
-        // Zatrzymaj grê po zakoñczeniu animacji
         Destroy(gameObject);
     }
+
+
 }
 
