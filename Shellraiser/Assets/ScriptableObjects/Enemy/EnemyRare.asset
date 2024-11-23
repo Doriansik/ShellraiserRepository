@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: EnemyRare
   m_EditorClassIdentifier: 
   moveSpeed: 1
-  damage: 20
-  attackCooldown: 2
-  health: 75
+  damage: 4
+  attackCooldown: 1
+  health: 30
   spawnRotation: {x: 0, y: 0, z: 0}
   prefab: {fileID: 5964788708622800700, guid: 8082ecb86b2a0b74d91b458b68ea18a5, type: 3}

@@ -1,34 +1,45 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
-public class Turret : MonoBehaviour
+public class TowerUnit : MonoBehaviour
 {
-    public Transform target; // Cel do namierzania
-    public float range = 10f; // Zasiêg wie¿yczki
-    public float rotationSpeed = 5f; // Prêdkoœæ obracania wie¿yczki
-    public GameObject projectilePrefab; // Prefab pocisku
-    public Transform firePoint; // Punkt, z którego strzela wie¿yczka
-    public float fireRate = 1f; // Czêstotliwoœæ strza³ów (1 strza³ na sekundê)
+    [SerializeField] private GameObject homeBase;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Transform target; // Cel do namierzania
+    [SerializeField] private float range = 10f; // Zasiêg wie¿yczki
+    [SerializeField] private GameObject projectilePrefab; // Prefab pocisku
+    [SerializeField] private Transform firePoint; // Punkt, z którego strzela wie¿yczka
+    [SerializeField] private float fireRate = 1f; // Czêstotliwoœæ strza³ów (1 strza³ na sekundê)
 
     private float fireCooldown = 0f;
 
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     void Update()
     {
+        Die();
         // ZnajdŸ najbli¿szego przeciwnika w zasiêgu
         FindTarget();
-
         // Jeœli mamy cel
         if (target != null)
         {
-            RotateTowardsTarget();
 
             // Strzelaj, jeœli cooldown pozwala
             if (fireCooldown <= 0f)
             {
+                
                 Shoot();
                 fireCooldown = 1f / fireRate;
             }
         }
-
+        else
+        {
+            animator.SetBool("isShooting", false);
+        }
         // Odliczanie cooldownu
         fireCooldown -= Time.deltaTime;
     }
@@ -59,18 +70,13 @@ public class Turret : MonoBehaviour
         }
     }
 
-    void RotateTowardsTarget()
-    {
-        Vector3 direction = target.position - transform.position;
-        Quaternion lookRotation = Quaternion.LookRotation(direction + new Vector3(0,270,0));
-        Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed).eulerAngles;
-        transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-    }
 
     void Shoot()
     {
+        
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
         UnitProjectile projectileScript = projectile.GetComponent<UnitProjectile>();
+        animator.SetBool("isShooting", true);
 
         if (projectileScript != null)
         {
@@ -83,6 +89,23 @@ public class Turret : MonoBehaviour
         // Wizualizacja zasiêgu w edytorze
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    private void Die()
+    {
+            if (homeBase == null)
+            {
+                animator.SetBool("isDead", true);
+                StartCoroutine(StopGameAfterAnimation());
+            }
+    }
+    private IEnumerator StopGameAfterAnimation()
+    {
+        // Poczekaj na czas trwania animacji
+        yield return new WaitForSeconds(2f);
+
+        // Zatrzymaj grê po zakoñczeniu animacji
+        Time.timeScale = 0f;
     }
 }
 

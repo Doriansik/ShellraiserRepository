@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1348b0317bd864ebe90ac2066e7074, type: 3}
   m_Name: UnitRare
   m_EditorClassIdentifier: 
-  moveSpeed: 1.3
-  damage: 13
-  attackCooldown: 1.5
-  health: 45
-  cost: 3
+  moveSpeed: 2
+  damage: 5
+  attackCooldown: 3
+  health: 10
+  cost: 5
+  spawnRotation: {x: 0, y: 0, z: 0}
   prefab: {fileID: 4884588771154387750, guid: b13649e276f789442a4aedd6468510f5, type: 3}

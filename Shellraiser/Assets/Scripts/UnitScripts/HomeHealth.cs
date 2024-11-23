@@ -39,7 +39,7 @@ public class HomeHealth : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
         gameOverLay.SetActive(true);
     }
 }

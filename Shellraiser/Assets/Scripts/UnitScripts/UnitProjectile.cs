@@ -2,41 +2,64 @@ using UnityEngine;
 
 public class UnitProjectile : MonoBehaviour
 {
-    [SerializeField] private EnemyBehavior enemyBehavior;
-    public float speed = 20f; // Prêdkoœæ pocisku
-    public int damage = 10; // Obra¿enia zadawane przez pocisk
-    private Transform target;
+    [SerializeField] private float speed = 20f; // Prêdkoœæ pocisku
+    [SerializeField] private int damage = 10; // Obra¿enia zadawane przez pocisk
+    private Transform targetEnemy;
 
     public void Seek(Transform _target)
     {
-        target = _target;
+        targetEnemy = _target;
     }
 
     void Update()
     {
-        if (target == null)
+        // Jeœli nie ma celu, zniszcz pocisk
+        if (targetEnemy == null)
         {
             Destroy(gameObject);
             return;
         }
 
-        Vector3 direction = target.position - transform.position;
+        // Oblicz kierunek do celu
+        Vector3 direction = (targetEnemy.position - transform.position).normalized;
+
+        // Oblicz odleg³oœæ do przejœcia w tej klatce
         float distanceThisFrame = speed * Time.deltaTime;
 
-        if (direction.magnitude <= distanceThisFrame)
+        // Jeœli pocisk osi¹gnie cel
+        if (Vector3.Distance(transform.position, targetEnemy.position) <= distanceThisFrame)
         {
             HitTarget();
             return;
         }
 
-        transform.Translate(direction.normalized * distanceThisFrame, Space.World);
-        transform.LookAt(target);
+        // Przesuñ pocisk w kierunku celu
+        transform.position += direction * distanceThisFrame;
+
+        // Obróæ pocisk w kierunku celu
+        transform.LookAt(targetEnemy);
     }
+
+    
 
     void HitTarget()
     {
-        enemyBehavior.TakeDamage(damage);
-        Destroy(gameObject);
-        // Jeœli masz skrypt na przeciwnika, mo¿esz tu dodaæ odbieranie obra¿eñ
+        if (targetEnemy != null) // Upewnij siê, ¿e cel istnieje
+        {
+            EnemyBehavior enemy = targetEnemy.GetComponent<EnemyBehavior>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage); // Zadaj obra¿enia
+            }
+        }
+
+        Destroy(gameObject); // Zniszcz pocisk po trafieniu
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Enemy")) 
+        {
+            HitTarget();
+        }
     }
 }

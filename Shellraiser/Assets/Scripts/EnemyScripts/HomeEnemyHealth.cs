@@ -39,7 +39,6 @@ public class HomeEnemyHealth : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
-        Time.timeScale = 0;
         winOverlay.SetActive(true);
     }
 }

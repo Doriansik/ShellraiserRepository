@@ -12,10 +12,12 @@ public class GameManager : MonoBehaviour
     private float spawnRate;
 
     [Header("Shop Variables")]
+    [SerializeField] private float buyDelayAmount;
     [SerializeField] private int coinAmount;
     [SerializeField] private float timeToEarnCoin;
     [SerializeField] private TextMeshProUGUI coinText;
     private float coinTimer;
+    private float buyDelay;
 
 
     [Header("Other")]
@@ -27,10 +29,17 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         spawnRate = timeBetweenSpawn;
+        buyDelay = buyDelayAmount;
+
     }
 
     private void Update()
     {
+        if (buyDelay > 0f)
+        {
+            buyDelay -= Time.deltaTime;
+        }
+
         EarningCoin();
         Spawn();
     }
@@ -75,30 +84,35 @@ public class GameManager : MonoBehaviour
     public void OnSpawnOrdinary()
     {
         UnitBehaviorSO unitOrdinary = unitListType.unitType[0];
-        if (coinAmount >= unitOrdinary.cost)
+
+        if (buyDelay <= 0f && coinAmount >= unitOrdinary.cost)
         {
-            Instantiate(unitOrdinary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitOrdinary.spawnRotation));
             coinAmount -= unitOrdinary.cost;
+            // Tworzenie jednostki
+            Instantiate(unitOrdinary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitOrdinary.spawnRotation));
+            buyDelay = buyDelayAmount;
         }
     }
 
     public void OnSpawnRare()
     {
         UnitBehaviorSO unitRare = unitListType.unitType[1];
-        if (coinAmount >= unitRare.cost)
+        if (buyDelay <= 0f && coinAmount >= unitRare.cost)
         {
-            Instantiate(unitRare.prefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
             coinAmount -= unitRare.cost;
+            Instantiate(unitRare.prefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
+            buyDelay = buyDelayAmount;
         }
     }
 
     public void OnSpawnLegendary()
     {
         UnitBehaviorSO unitLegendary = unitListType.unitType[2];
-        if (coinAmount >= unitLegendary.cost)
+        if (buyDelay <= 0f && coinAmount >= unitLegendary.cost)
         {
-            Instantiate(unitLegendary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitLegendary.spawnRotation));
             coinAmount -= unitLegendary.cost;
+            Instantiate(unitLegendary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitLegendary.spawnRotation));
+            buyDelay = buyDelayAmount;
         }
     }
 

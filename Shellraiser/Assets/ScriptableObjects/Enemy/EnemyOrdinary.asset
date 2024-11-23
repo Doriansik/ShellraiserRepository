@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06105786819ac0746957fa85dde67e0e, type: 3}
   m_Name: EnemyOrdinary
   m_EditorClassIdentifier: 
-  moveSpeed: 0.5
-  damage: 10
-  attackCooldown: 1
-  health: 50
+  moveSpeed: 1
+  damage: 3
+  attackCooldown: 1.5
+  health: 20
   spawnRotation: {x: 270, y: 0, z: 270}
   prefab: {fileID: 4887226065979436547, guid: 9ce36c804c805b9468c41bbbd9820370, type: 3}

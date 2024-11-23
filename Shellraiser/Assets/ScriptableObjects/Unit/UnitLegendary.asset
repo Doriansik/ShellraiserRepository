@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1348b0317bd864ebe90ac2066e7074, type: 3}
   m_Name: UnitLegendary
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  damage: 10
-  attackCooldown: 1
-  health: 30
-  cost: 3
+  moveSpeed: 1
+  damage: 2
+  attackCooldown: 3.5
+  health: 40
+  cost: 11
   spawnRotation: {x: 0, y: 270, z: 0}
-  prefab: {fileID: 6072289807887404331, guid: 0747885de95b39046a2f561f88c9e654, type: 3}
+  prefab: {fileID: 7839939750453566631, guid: 0747885de95b39046a2f561f88c9e654, type: 3}
