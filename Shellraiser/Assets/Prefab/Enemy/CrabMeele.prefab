@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -7810557822140165376}
   - component: {fileID: 7626004595444190071}
   m_Layer: 0
-  m_Name: EnemyOrdinaryCrab
+  m_Name: CrabMeele
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
