@@ -15,7 +15,7 @@ MonoBehaviour:
   moveSpeed: 1
   damage: 4
   attackCooldown: 1
-  health: 30
+  health: 25
   attackRange: 0
   spawnRotation: {x: 0, y: 0, z: 0}
   prefab: {fileID: 4263673837523402770, guid: b96e1e0a0fe01c34bb2b85ce3f332cf7, type: 3}
