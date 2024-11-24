@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   damage: 5
-  attackCooldown: 3
+  attackCooldown: 2
   health: 10
   cost: 5
   spawnRotation: {x: 0, y: 270, z: 0}

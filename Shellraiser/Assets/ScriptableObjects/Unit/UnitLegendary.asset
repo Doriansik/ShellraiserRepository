@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   damage: 2
-  attackCooldown: 3.5
+  attackCooldown: 2.5
   health: 40
   cost: 11
   spawnRotation: {x: 0, y: 270, z: 0}
   prefab: {fileID: 7839939750453566631, guid: 0747885de95b39046a2f561f88c9e654, type: 3}
+  isRanged: 0
