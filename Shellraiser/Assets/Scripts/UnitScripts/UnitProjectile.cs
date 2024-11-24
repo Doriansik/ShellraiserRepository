@@ -1,14 +1,22 @@
+using System.Collections;
 using UnityEngine;
 
 public class UnitProjectile : MonoBehaviour
 {
     [SerializeField] private float speed = 20f; // Prêdkoœæ pocisku
     [SerializeField] private int damage = 10; // Obra¿enia zadawane przez pocisk
+    
     private Transform targetEnemy;
+
+    private void Start()
+    {
+        StartCoroutine(DestroyToTime());
+    }
 
     public void Seek(Transform _target)
     {
         targetEnemy = _target;
+        
     }
 
     void Update()
@@ -55,11 +63,16 @@ public class UnitProjectile : MonoBehaviour
 
         Destroy(gameObject); // Zniszcz pocisk po trafieniu
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.collider.CompareTag("Enemy")) 
+        if (other.gameObject.CompareTag("Enemy"))
         {
             HitTarget();
         }
+    }
+
+    private IEnumerator DestroyToTime()
+    {
+        yield return new WaitForSeconds(3f);
     }
 }

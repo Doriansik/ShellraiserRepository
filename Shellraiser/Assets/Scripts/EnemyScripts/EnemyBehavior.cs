@@ -28,12 +28,12 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (enemyOrdinary.isRanged)
         {
-            FindTarget(); // Szukaj celu, je�li jednostka dystansowa
+            FindTarget(); // Szukaj celu, jeżeli jednostka dystansowa
         }
 
         if (target == null)
         {
-            // Brak celu - jednostka si� porusza
+            // Brak celu - jednostka się porusza
             animator.SetBool("isAttacking", false);
             transform.position += Vector3.left * enemyOrdinary.moveSpeed * Time.deltaTime;
         }
@@ -48,16 +48,31 @@ public class EnemyBehavior : MonoBehaviour
             {
                 if (enemyOrdinary.isRanged)
                 {
-                    RangedAttack(); // Atak dystansowy
+                    if (target != null && target.CompareTag("HomeUnit"))
+                    {
+                        // Jeśli celem jest baza, wykonaj atak na bazę
+                        AttackHome();
+                    }
+                    else
+                    {
+                        // W przeciwnym razie wykonaj atak dystansowy
+                        RangedAttack();
+                    }
                 }
                 else
                 {
-                    Attack();       // Atak wr�cz
-                    AttackHome();   // Atak na HomeEnemy
+                    Attack();       // Atak wręcz
+                    if (target != null && target.CompareTag("HomeUnit"))
+                    {
+                        // Jeśli celem jest baza, wykonaj atak na bazę
+                        AttackHome();
+                    }
                 }
                 attackTimer = enemyOrdinary.attackCooldown;
+
             }
         }
+
 
     }
 
@@ -97,6 +112,7 @@ public class EnemyBehavior : MonoBehaviour
             // Je�eli napotkano inn� jednostk�, sprawdzamy, czy mo�na j� zablokowa�
             targetEnemy = collision.transform;
         }
+
     }
 
     void OnCollisionExit(Collision collision)
@@ -151,6 +167,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (target != null)
         {
+            animator.SetBool("isAttacking", true);
             // Wystrzeliwanie pocisku
             GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
             EnemyProjectileBehavior projectileEnemyScript = projectile.GetComponent<EnemyProjectileBehavior>();
@@ -160,6 +177,8 @@ public class EnemyBehavior : MonoBehaviour
             }
         }
     }
+
+ 
 
     public void TakeDamage(int amount)
     {
