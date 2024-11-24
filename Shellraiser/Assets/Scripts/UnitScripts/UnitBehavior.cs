@@ -10,6 +10,7 @@ public class UnitBehavior : MonoBehaviour
     [SerializeField] private float detectionRange = 10f; // Zasiêg wykrywania wrogów
 
     private Transform target;
+    private Transform targetUnit;
     private float attackTimer;
     private int currentHealth;
 
@@ -32,7 +33,8 @@ public class UnitBehavior : MonoBehaviour
             animator.SetBool("isAttacking", false);
             transform.position += Vector3.right * unitOrdinary.moveSpeed * Time.deltaTime;
         }
-        else
+        
+        if(target != null)
         {
             // Jednostka ma cel
             animator.SetBool("isAttacking", true);
@@ -77,20 +79,39 @@ public class UnitBehavior : MonoBehaviour
         target = closestTarget; // Ustaw najbli¿szy cel jako target
     }
 
-    void RangedAttack()
+    void OnCollisionEnter(Collision collision)
     {
-        if (target != null)
+        // Sprawdzenie, czy napotkano cel
+        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("HomeEnemy"))
         {
-            // Wystrzeliwanie pocisku
-            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-            ProjectileBehavior projectileScript = projectile.GetComponent<ProjectileBehavior>();
-            if (projectileScript != null)
-            {
-                projectileScript.Initialize(target, unitOrdinary.damage); // Przekazanie celu i obra¿eñ
-            }
+            target = collision.transform;
+        }
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            targetUnit = collision.transform;
         }
     }
 
+    void OnCollisionExit(Collision collision)
+    {
+        // Jeœli jednostka wyjdzie z zasiêgu celu
+        if (collision.transform == target)
+        {
+            target = null;
+        }
+
+        if (collision.transform == targetUnit)
+        {
+            targetUnit = null;
+        }
+
+        // Jeœli nie ma ju¿ celu, jednostka powinna przejœæ do chodzenia
+        if (target == null && targetUnit == null)
+        {
+            animator.SetBool("isAttacking", false);  // Wy³¹czenie animacji ataku
+        }
+    }
     void Attack()
     {
         if (target != null)
@@ -118,6 +139,22 @@ public class UnitBehavior : MonoBehaviour
             }
         }
     }
+
+    void RangedAttack()
+    {
+        if (target != null)
+        {
+            // Wystrzeliwanie pocisku
+            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+            ProjectileBehavior projectileScript = projectile.GetComponent<ProjectileBehavior>();
+            if (projectileScript != null)
+            {
+                projectileScript.Initialize(target, unitOrdinary.damage); // Przekazanie celu i obra¿eñ
+            }
+        }
+    }
+
+    
 
     public void TakeDamage(int amount)
     {
