@@ -7,8 +7,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] private EnemyBehaviorSO enemyOrdinary;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject projectilePrefab; // Prefab pocisku dla jednostek dystansowych
-    [SerializeField] private Transform firePoint; // Punkt wystrza³u pocisku
-    [SerializeField] private float detectionRange = 10f; // Zasiêg wykrywania wrogów
+    [SerializeField] private Transform firePoint; // Punkt wystrzaï¿½u pocisku
+    [SerializeField] private float detectionRange = 10f; // Zasiï¿½g wykrywania wrogï¿½w
 
     private Transform target;
     private Transform targetEnemy;
@@ -16,22 +16,24 @@ public class EnemyBehavior : MonoBehaviour
     private int currentHealth;
 
 
+
     private void Start()
     {
         currentHealth = enemyOrdinary.health;
         animator = GetComponent<Animator>();
+
     }
 
     void Update()
     {
         if (enemyOrdinary.isRanged)
         {
-            FindTarget(); // Szukaj celu, jeœli jednostka dystansowa
+            FindTarget(); // Szukaj celu, jeï¿½li jednostka dystansowa
         }
 
         if (target == null)
         {
-            // Brak celu - jednostka siê porusza
+            // Brak celu - jednostka siï¿½ porusza
             animator.SetBool("isAttacking", false);
             transform.position += Vector3.left * enemyOrdinary.moveSpeed * Time.deltaTime;
         }
@@ -50,7 +52,7 @@ public class EnemyBehavior : MonoBehaviour
                 }
                 else
                 {
-                    Attack();       // Atak wrêcz
+                    Attack();       // Atak wrï¿½cz
                     AttackHome();   // Atak na HomeEnemy
                 }
                 attackTimer = enemyOrdinary.attackCooldown;
@@ -61,7 +63,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void FindTarget()
     {
-        // Wyszukaj najbli¿szego wroga w okreœlonym zasiêgu
+        // Wyszukaj najbliï¿½szego wroga w okreï¿½lonym zasiï¿½gu
         Collider[] hits = Physics.OverlapSphere(transform.position, detectionRange);
         float closestDistance = detectionRange;
         Transform closestTarget = null;
@@ -79,7 +81,7 @@ public class EnemyBehavior : MonoBehaviour
             }
         }
 
-        target = closestTarget; // Ustaw najbli¿szy cel jako target
+        target = closestTarget; // Ustaw najbliï¿½szy cel jako target
     }
 
     void OnCollisionEnter(Collision collision)
@@ -92,14 +94,14 @@ public class EnemyBehavior : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Je¿eli napotkano inn¹ jednostkê, sprawdzamy, czy mo¿na j¹ zablokowaæ
+            // Jeï¿½eli napotkano innï¿½ jednostkï¿½, sprawdzamy, czy moï¿½na jï¿½ zablokowaï¿½
             targetEnemy = collision.transform;
         }
     }
 
     void OnCollisionExit(Collision collision)
     {
-        // Jeœli jednostka wyjdzie z zasiêgu, przestaje byæ celem
+        // Jeï¿½li jednostka wyjdzie z zasiï¿½gu, przestaje byï¿½ celem
         if (collision.transform == target)
         {
             target = null;
@@ -154,7 +156,7 @@ public class EnemyBehavior : MonoBehaviour
             EnemyProjectileBehavior projectileEnemyScript = projectile.GetComponent<EnemyProjectileBehavior>();
             if (projectileEnemyScript != null)
             {
-                projectileEnemyScript.Initialize(target, enemyOrdinary.damage); // Przekazanie celu i obra¿eñ
+                projectileEnemyScript.Initialize(target, enemyOrdinary.damage); // Przekazanie celu i obraï¿½eï¿½
             }
         }
     }
@@ -179,7 +181,7 @@ public class EnemyBehavior : MonoBehaviour
         // Poczekaj na czas trwania animacji
         yield return new WaitForSeconds(2f);
 
-        // Zatrzymaj grê po zakoñczeniu animacji
+        // Zatrzymaj grï¿½ po zakoï¿½czeniu animacji
         Destroy(gameObject);
     }
 }
