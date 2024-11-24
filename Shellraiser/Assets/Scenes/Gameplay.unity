@@ -2782,9 +2782,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51a8bee836cd2c046aad098bea3ed8d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenSpawn: 7
-  buyDelayAmount: 4
-  coinAmount: 20
+  timeBetweenSpawn: 8
+  buyDelayAmount: 4.2
+  coinAmount: 0
   timeToEarnCoin: 1
   coinText: {fileID: 33487796}
   homeEnemyUnitSpawnpoint: {fileID: 829135868}
@@ -6197,7 +6197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4825ad8aff179554d889ae3557f101b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  homeHealth: 25
+  homeHealth: 75
   gameOverLay: {fileID: 612823684}
   storageButtons: {fileID: 1665118374}
   healthBar: {fileID: 104498270}
@@ -6366,7 +6366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8276c06362293b46a751c9ea86ab19b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  homeHealthEnemy: 1000
+  homeHealthEnemy: 75
   winOverlay: {fileID: 638977302}
   storageButtons: {fileID: 1665118374}
   healthBarEnemy: {fileID: 248272931}
