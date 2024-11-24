@@ -5,7 +5,10 @@ public class EnemyBehavior : MonoBehaviour
 {
 
     [SerializeField] private EnemyBehaviorSO enemyOrdinary;
-    //[SerializeField] private Animator animator;
+    [SerializeField] private Animator animator;
+    [SerializeField] private GameObject projectilePrefab; // Prefab pocisku dla jednostek dystansowych
+    [SerializeField] private Transform firePoint; // Punkt wystrza³u pocisku
+    [SerializeField] private float detectionRange = 10f; // Zasiêg wykrywania wrogów
 
     private Transform target;
     private Transform targetEnemy;
@@ -16,27 +19,67 @@ public class EnemyBehavior : MonoBehaviour
     private void Start()
     {
         currentHealth = enemyOrdinary.health;
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        if (target == null && targetEnemy == null)
+        if (enemyOrdinary.isRanged)
         {
-            // Przeciwnik porusza siê do przodu, jeœli nie ma celu
+            FindTarget(); // Szukaj celu, jeœli jednostka dystansowa
+        }
+
+        if (target == null)
+        {
+            // Brak celu - jednostka siê porusza
+            animator.SetBool("isAttacking", false);
             transform.position += Vector3.left * enemyOrdinary.moveSpeed * Time.deltaTime;
         }
-        else
+
+        if (target != null)
         {
-            // Przeciwnik zaczyna atakowaæ, jeœli ma cel
+            // Jednostka ma cel
+            animator.SetBool("isAttacking", true);
+
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0f)
             {
-                Attack();
-                AttackHome();
+                if (enemyOrdinary.isRanged)
+                {
+                    RangedAttack(); // Atak dystansowy
+                }
+                else
+                {
+                    Attack();       // Atak wrêcz
+                    AttackHome();   // Atak na HomeEnemy
+                }
                 attackTimer = enemyOrdinary.attackCooldown;
             }
         }
+
+    }
+
+    void FindTarget()
+    {
+        // Wyszukaj najbli¿szego wroga w okreœlonym zasiêgu
+        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRange);
+        float closestDistance = detectionRange;
+        Transform closestTarget = null;
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("Player") || hit.CompareTag("HomeUnit"))
+            {
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestTarget = hit.transform;
+                }
+            }
+        }
+
+        target = closestTarget; // Ustaw najbli¿szy cel jako target
     }
 
     void OnCollisionEnter(Collision collision)
@@ -51,17 +94,6 @@ public class EnemyBehavior : MonoBehaviour
         {
             // Je¿eli napotkano inn¹ jednostkê, sprawdzamy, czy mo¿na j¹ zablokowaæ
             targetEnemy = collision.transform;
-
-            // Sprawdzamy, czy jednostka, która dotyka, jest blokuj¹c¹
-            EnemyBehavior enemyBehavior = collision.gameObject.GetComponent<EnemyBehavior>();
-            if (enemyBehavior != null)
-            {
-                // Jeœli jednostka ju¿ dotknê³a i nie ma wolnej drogi, to zatrzymujemy j¹
-                if (IsBlocked())
-                {
-                    targetEnemy = null; // Przerywamy atakowanie
-                }
-            }
         }
     }
 
@@ -77,22 +109,11 @@ public class EnemyBehavior : MonoBehaviour
         {
             targetEnemy = null;
         }
-    }
 
-    bool IsBlocked()
-    {
-        // Sprawdzamy, czy jednostka nie ma wolnej drogi
-        // Jeœli inne jednostki blokuj¹ j¹, powinna siê zatrzymaæ
-        // Mo¿esz dodaæ tutaj prosty check dla kolizji z innymi jednostkami
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f); // Zasiêg sprawdzania kolizji
-        foreach (var hitCollider in hitColliders)
+        if(target == null && targetEnemy == null)
         {
-            if (hitCollider.CompareTag("Enemy"))
-            {
-                return true; // Jednostka jest zablokowana przez inn¹ jednostkê
-            }
+            animator.SetBool("isAttacking", false);
         }
-        return false; // Jednostka ma woln¹ drogê
     }
 
 
@@ -100,6 +121,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (target != null)
         {
+            animator.SetBool("isAttacking", true);
             // Zadaje obrazenia jednostce
             UnitBehavior unit = target.GetComponent<UnitBehavior>();
             if (unit != null)
@@ -113,11 +135,26 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (target != null)
         {
+            animator.SetBool("isAttacking", true);
             // Zadaje obrazenia wrogowi
             HomeHealth homeHealth = target.GetComponent<HomeHealth>();
             if (homeHealth != null)
             {
                 homeHealth.TakeDamage(enemyOrdinary.damage);
+            }
+        }
+    }
+
+    void RangedAttack()
+    {
+        if (target != null)
+        {
+            // Wystrzeliwanie pocisku
+            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+            EnemyProjectileBehavior projectileEnemyScript = projectile.GetComponent<EnemyProjectileBehavior>();
+            if (projectileEnemyScript != null)
+            {
+                projectileEnemyScript.Initialize(target, enemyOrdinary.damage); // Przekazanie celu i obra¿eñ
             }
         }
     }
@@ -133,18 +170,17 @@ public class EnemyBehavior : MonoBehaviour
 
     void Die()
     {
-        Destroy(gameObject);
-        //animator.SetBool("isDead", true);
-        //StartCoroutine(DestroyAfterAnimation());
+        animator.SetBool("isDead", true);
+        StartCoroutine(DestroyAfterAnimation());
     }
 
-    /*private IEnumerator DestroyAfterAnimation()
+    private IEnumerator DestroyAfterAnimation()
     {
         // Poczekaj na czas trwania animacji
         yield return new WaitForSeconds(2f);
 
         // Zatrzymaj grê po zakoñczeniu animacji
         Destroy(gameObject);
-    }*/
+    }
 }
 

@@ -10,4 +10,5 @@ public class EnemyBehaviorSO : ScriptableObject
     public int health; // Punkty zycia jednostki
     public Vector3 spawnRotation; // Rotacja przeciwnika po spawnie
     public GameObject prefab; // Prefab wroga
+    public bool isRanged;
 }

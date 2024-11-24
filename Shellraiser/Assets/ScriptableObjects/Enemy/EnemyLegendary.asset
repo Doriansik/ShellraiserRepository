@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06105786819ac0746957fa85dde67e0e, type: 3}
+  m_Name: EnemyLegendary
+  m_EditorClassIdentifier: 
+  moveSpeed: 1
+  damage: 4
+  attackCooldown: 2
+  health: 40
+  spawnRotation: {x: 0, y: 180, z: 0}
+  prefab: {fileID: 4019118765415505147, guid: 8794a084bbe7b0a4d89b1a1c93219745, type: 3}
+  isRanged: 0

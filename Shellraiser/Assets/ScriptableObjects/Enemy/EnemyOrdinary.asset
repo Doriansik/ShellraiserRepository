@@ -16,5 +16,6 @@ MonoBehaviour:
   damage: 3
   attackCooldown: 1.5
   health: 20
-  spawnRotation: {x: 270, y: 0, z: 270}
-  prefab: {fileID: 4887226065979436547, guid: 9ce36c804c805b9468c41bbbd9820370, type: 3}
+  spawnRotation: {x: 0, y: 270, z: 0}
+  prefab: {fileID: 2151779789592139173, guid: 5c816eacbbb08244eace0af6e1c98bdd, type: 3}
+  isRanged: 0

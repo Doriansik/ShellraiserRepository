@@ -17,4 +17,5 @@ MonoBehaviour:
   attackCooldown: 1
   health: 30
   spawnRotation: {x: 0, y: 0, z: 0}
-  prefab: {fileID: 5964788708622800700, guid: 8082ecb86b2a0b74d91b458b68ea18a5, type: 3}
+  prefab: {fileID: 4263673837523402770, guid: b96e1e0a0fe01c34bb2b85ce3f332cf7, type: 3}
+  isRanged: 1

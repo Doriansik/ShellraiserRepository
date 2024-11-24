@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
             Quaternion spawnRotation = Quaternion.Euler(randomEnemyType.spawnRotation);
 
             // Spawnowanie przeciwnika
-            Instantiate(randomEnemyType.prefab, homeEnemyUnitSpawnpoint.transform.position, spawnRotation);
+            Instantiate(randomEnemyType.prefab, homeEnemyUnitSpawnpoint.transform.position, Quaternion.Euler(randomEnemyType.spawnRotation));
 
             // Resetowanie czasu do nastêpnego spawnu
             spawnRate = timeBetweenSpawn;
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
             coinAmount -= unitOrdinary.cost;
             UpdateCoinUI();
             // Tworzenie jednostki
-            Instantiate(unitOrdinary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitOrdinary.spawnRotation));
+            Instantiate(unitOrdinary.prefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
             buyDelay = buyDelayAmount;
         }
     }
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         {
             coinAmount -= unitRare.cost;
             UpdateCoinUI();
-            Instantiate(unitRare.prefab, homeUnitSpawnpoint.transform.position, Quaternion.identity);
+            Instantiate(unitRare.prefab, homeUnitSpawnpoint.transform.position, Quaternion.Euler(unitRare.spawnRotation));
             buyDelay = buyDelayAmount;
         }
     }
